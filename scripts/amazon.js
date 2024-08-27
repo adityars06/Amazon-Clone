@@ -24,7 +24,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-quantity-container">
-            <select>
+            <select class='js-quantity-selector-${product.id}'>
               <option selected value="1">1</option>
               <option value="2">2</option>
               <option value="3">3</option>
@@ -60,6 +60,10 @@ document.querySelectorAll('.js-add-to-cart')
 
     let matchingItem;
     let totalQuantity=0;
+    const select=document.querySelector(`.js-quantity-selector-${productId}`);
+    let quantityToAdd= Number(select.value) ;
+    
+    
 
     cart.forEach((item)=>{
       if(item.productId==productId){
@@ -67,12 +71,12 @@ document.querySelectorAll('.js-add-to-cart')
           }
         })
       if(matchingItem){
-        matchingItem.quantity++;
+        matchingItem.quantity+=quantityToAdd;
       }
       else{
         cart.push({
           productId: productId,
-          quantity:1
+          quantity:quantityToAdd
         })
       }
       cart.forEach((item)=>{
@@ -83,6 +87,9 @@ document.querySelectorAll('.js-add-to-cart')
       console.log(cart);
     })
   })
+
+
+
 
  
 
