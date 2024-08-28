@@ -1,4 +1,10 @@
-productHTML=``;
+//two ways to import at top(always)..import {variable, function name without ()} from 'filepath'
+//or import * as something(cartModule) from 'filepath' then use as cartModule.variable or cartModule.function()
+import {cart,addToCart} from '../data/cart.js';
+import {products} from '../data/products.js'
+
+
+let productHTML=``;
 products.forEach((product) => {
   productHTML+=`
       <div class="product-container">
@@ -52,55 +58,37 @@ products.forEach((product) => {
 });
 
 document.querySelector('.js-products-grid').innerHTML=productHTML;
-let addedMessageTimeoutId;
+let timeoutId={};
 
 document.querySelectorAll('.js-add-to-cart')
   .forEach((button)=>{
     button.addEventListener('click',()=>{
       const productId=button.dataset.productId
-
-    let matchingItem;
-    let totalQuantity=0;
-    const addedMessage=document.querySelector(` .js-added-to-cart-${productId}`)
-    
-    const select=document.querySelector(`.js-quantity-selector-${productId}`);
-    let quantityToAdd= Number(select.value) ;
-    
+      const select=document.querySelector(`.js-quantity-selector-${productId}`);
+      let quantityToAdd= Number(select.value) ;
+      let totalQuantity=0;
+      const addedMessage=document.querySelector(`.js-added-to-cart-${productId}`);
     
 
-    cart.forEach((item)=>{
-      if(item.productId==productId){
-          matchingItem=item;
-          }
-        })
-      if(matchingItem){
-        matchingItem.quantity+=quantityToAdd;
-      }
-      else{
-        cart.push({
-          productId: productId,
-          quantity:quantityToAdd
-        })
-      }
-      cart.forEach((item)=>{
-        totalQuantity+=item.quantity
+      addToCart(productId,quantityToAdd)
+    
+       cart.forEach((cartItem)=>{
+        totalQuantity+=cartItem.quantity
       })
       document.querySelector('.js-cart-quantity').innerHTML=`${totalQuantity}`;
       addedMessage.classList.add('added-to-cart-visible')
       
       
-      if(addedMessageTimeoutId){
-        clearTimeout(addedMessageTimeoutId);
+      if(timeoutId[productId]){
+        clearTimeout(timeoutId[productId]);
       }
-      addedMessageTimeoutId=setTimeout(()=>{
+      timeoutId[productId]=setTimeout(()=>{
          addedMessage.classList.remove('added-to-cart-visible');
       },2000) 
-
-      
-      
-      console.log(cart);
     })
   })
+
+ 
 
 
 
