@@ -1,6 +1,6 @@
 //two ways to import at top(always)..import {variable, function name without ()} from 'filepath'
 //or import * as something(cartModule) from 'filepath' then use as cartModule.variable or cartModule.function()
-import {cart,addToCart} from '../data/cart.js';
+import {cart,addToCart,initialiseCartQuantity} from '../data/cart.js';
 import {products} from '../data/products.js'
 
 
@@ -56,6 +56,8 @@ products.forEach((product) => {
           </button>
         </div>`
 });
+
+initialiseCartQuantity();
 
 document.querySelector('.js-products-grid').innerHTML=productHTML;
 let timeoutId={};
