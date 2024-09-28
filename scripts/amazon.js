@@ -59,6 +59,7 @@ products.forEach((product) => {
 
 initialiseCartQuantity();
 
+
 document.querySelector('.js-products-grid').innerHTML=productHTML;
 let timeoutId={};
 
@@ -78,7 +79,7 @@ document.querySelectorAll('.js-add-to-cart')
   
   
   
-  function updateCartQuantity(productId){
+   export function updateCartQuantity(productId){
     let totalQuantity=0;
     const addedMessage=document.querySelector(`.js-added-to-cart-${productId}`);
     

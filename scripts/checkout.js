@@ -1,5 +1,5 @@
 import {cart,deleteItem} from '../data/cart.js';
-import {products} from '../data/products.js'
+import {products} from '../data/products.js';
 
 let cartSummaryHTML='';
 
@@ -35,12 +35,16 @@ cart.forEach((cartItem)=>{
                   <span>
                     Quantity: <span class="quantity-label">${cartItem.quantity}</span>
                   </span>
-                  <span class="update-quantity-link link-primary">
+                  <span class="update-quantity-link link-primary js-update-quantity-link" data-product-id="${productId}">
                     Update
                   </span>
                   <span class="delete-quantity-link link-primary js-delete-link" data-product-id="${matchingProduct.id}">
                     Delete
                   </span>
+                  <input class="quantity-input"/>
+                  <span class="save-quantity-link link-primary js-save-quantity-link">Save</span>
+
+                  
                 </div>
                 </div>
                 <div class="delivery-options">
@@ -103,6 +107,28 @@ document.querySelectorAll('.js-delete-link').forEach((link)=>{
     const productId= link.dataset.productId;
     deleteItem(productId);
     document.querySelector(`.js-cart-item-container-${productId}`).remove();
+    updateCheckoutHeader();
 
   })
 })
+
+document.querySelectorAll('.js-update-quantity-link')
+  .forEach((link)=>{
+    link.addEventListener('click',()=>{
+      const productId=link.dataset.productId;
+      console.log(productId)
+    })
+  })
+
+updateCheckoutHeader();
+
+function updateCheckoutHeader(){
+  let totalQuantity=0;
+cart.forEach((cartItem)=>{
+  totalQuantity+=cartItem.quantity
+})
+document.querySelector('.js-checkout-header-middle-section').innerHTML=
+          `Checkout (<a class="return-to-home-link"
+            href="amazon.html">${totalQuantity} items</a>)`
+
+}
