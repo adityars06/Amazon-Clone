@@ -216,7 +216,12 @@
 .save-quantity-link{
   display: none;
 }
+
 .is-editing-value{
   display: initial;
+}
+
+.hide{
+  display:none;
 }
 
