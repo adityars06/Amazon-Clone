@@ -1,5 +1,11 @@
 import {cart,deleteItem,addToCart} from '../data/cart.js';
 import {products} from '../data/products.js';
+import dayjs from 'https://unpkg.com/dayjs@1.11.10/esm/index.js';
+import { deliveryOptions } from '../data/deliveryoption.js';
+import formatCurrency from './utils/money.js';
+
+
+
 
 let cartSummaryHTML='';
 
@@ -101,6 +107,42 @@ cart.forEach((cartItem)=>{
   `
   document.querySelector('.js-order-summary').innerHTML=cartSummaryHTML;
 })
+ 
+function deliveryOptionsHTML(matchingProduct){
+  deliveryOptions.forEach((deliveryOption)=>{
+    const today=dayjs();
+    const deliveryDate=today.add(deliveryOption.deliveryTime,'days');
+    const dateString=deliveryDate.format('dddd,MMMM D');
+
+    const priceString = deliveryOption.priceCents
+    ===0?'Free shipping':formatCurrency(deliveryOption.priceCents);
+
+    `
+    <div class="delivery-options">
+    <div class="delivery-options-title">
+      Choose a delivery option:
+    </div>
+    <div class="delivery-option">
+      <input type="radio" checked
+        class="delivery-option-input"
+        name="delivery-option-${matchingProduct.id}">
+      <div>
+        <div class="delivery-option-date">
+          ${dateString}
+        </div>
+        <div class="delivery-option-price">
+          ${priceString}
+        </div>
+      </div>
+    </div>
+    `
+
+
+  })
+
+
+}
+
 
 
 document.querySelectorAll('.delete-quantity-link').forEach((link)=>{
